@@ -23,11 +23,11 @@ height: 80vh;
 
 div.UIsection::-webkit-scrollbar{
 	width: 20px !important;
-	background-color: rgba(0,0,0,0.15);
+	background-color: rgba(0,0,0,0.1);
 }
 
 div.UIsection::-webkit-scrollbar-thumb{
-	background-color: rgba(200,200,200,0.05);
+	background-color: rgba(0,0,0,0.15);
 }
 
 div#blocks{

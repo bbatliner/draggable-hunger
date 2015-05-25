@@ -13,6 +13,7 @@ function drop(ev) {
 }
 
 // Make sure to allow CORS on file:// protocol ;)
+// Use Chrome command line flag --allow-file-access-from-files
 $('#templates').load('templates.html', function() {
 
 	// Compile templates
