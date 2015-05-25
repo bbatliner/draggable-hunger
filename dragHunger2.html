@@ -7,48 +7,50 @@
 		padding: 0;
 		border: 0;
 		margin: 0;
-		background: black;
+		background: url("gray_sand.png");
 	}
 
 	body{
-		background: white;
+		background: transparent;
 		width: 90vw;
-		margin: 5vw;
+		margin: 5vh 5vw;
 	}
 
-	div.UIsection{
-		height: 80vh;
+	.UIsection{
+		height: 65vh;
 		width: 26vw;
 		margin: 0;
 		padding: 2vw;
 		position: absolute;
 		background: url('gray_sand.png');
 		overflow-y: scroll;
+		overflow-x: hidden;
 	}
 
-			div.UIsection::-webkit-scrollbar{
+			.UIsection::-webkit-scrollbar{
 				width: 20px !important;
 				background-color: rgba(0,0,0,0.15);
 			}
 
-			div.UIsection::-webkit-scrollbar-thumb{
+			.UIsection::-webkit-scrollbar-thumb{
 				background-color: rgba(200,200,200,0.05);
 			}
 
 		div#blocks{
 			border-left: 2px dashed white;
+			margin: 40px 0 0 0;
 		}
 
 		div#sandbox{
 			border-left: 2px dashed white;
-			margin: 0 0 0 30vw;
+			margin: 40px 0 0 30vw;
 		}
 
-		div#output{
+		#output{
 			border-left: 2px solid white;
 			border-right: 2px solid white;
 			background: #1a1a1a;
-			margin: 0 0 0 60vw;
+			margin: 40px 0 0 60vw;
 			font-family: "Consolas";
 			font-size: 10px;
 			line-height: 20px;
@@ -81,6 +83,51 @@
 
 		input.printCode:hover{
 			background: white;
+		}
+
+	input.columnButton{
+		width: 23vw;
+		margin: 0 4vw;
+		height: 30px;
+		background: black;
+		border-radius: 15px;
+		font-family: "Consolas";
+		color: white;
+		font-size: 15px;
+		line-height: 30px;
+		border: none;
+		outline: none;
+	}
+
+		input.columnButton:hover{
+			background: white;
+			color: black;
+		}
+
+	input.loadButton{
+		width: 39vw;
+		outline: none;
+		background: transparent;
+		font-family: "Consolas";
+		font-size: 40px;
+		line-height: 50px;
+	}
+
+		input.loadButton:hover{
+			background: white;
+		}
+
+		input#loadCarnivore{
+			float: left;
+			border: 10px solid red;
+			color: red;
+			margin: 0 3vw 20px 3vw;
+		}
+
+		input#loadHerbivore{
+			border: 10px solid green;
+			color: green;
+			margin: 0 3vw 20px 3vw;
 		}
 
 </style>
@@ -214,11 +261,31 @@
 				</select>
 				 that
 				<select id="{{id}}-type">
-					<option value="if(ani instanceOf Carnivore){">is a Carnivore</option>
-					<option value="if(ani instanceOf Herbivore){">is a Herbivore</option>
+					<option value="if(ani instanceof Carnivore){">is a Carnivore</option>
+					<option value="if(ani instanceof Herbivore){">is a Herbivore</option>
 					<option value="if(checkMateability(ani)){">can Mate with This</option>
 					<option value="if(isPrey(ani)){">This can Eat</option>
 				</select>
+			</div>
+		</div>
+	</script>
+
+	<script id="if-else-block-template" type="text/x-handlebars-template">
+		<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
+			<input id="a{{id}}"  class="printCode" type="button" onclick='printCode("if-else-block", this.id.substring(1))'>
+			<div class="if-else-block">
+				If this Cell contains:
+				<div id="{{id}}-if" class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
+					<!--Insert Animal Here.-->
+				</div>
+				Then:
+				<div id="{{id}}-then" class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
+					<!--Insert Animal Here.-->
+				</div>
+				Else:
+				<div id="{{id}}-else" class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
+					<!--Insert Animal Here.-->
+				</div>
 			</div>
 		</div>
 	</script>
@@ -232,13 +299,24 @@
 		var herbivoreEatBlockTemplate = Handlebars.compile($("#herbivore-eat-block-template").html());
 		var carnivoreEatBlockTemplate = Handlebars.compile($("#carnivore-eat-block-template").html());
 		var closestAnimalBlockTemplate = Handlebars.compile($("#closest-animal-block-template").html());
+		var ifElseBlockTemplate = Handlebars.compile($("#if-else-block-template").html());
 	</script>
 
 
+	<input id="loadCarnivore" class="loadButton" type="button" value="Carnivore" onclick="loadCode('carnivore');">
+	<input id="loadHerbivore" class="loadButton" type="button" value="Herbivore" onclick="loadCode('herbivore');">
 
+	<div class="UIsection" style="overflow: hidden; background: transparent; margin-left: 0; width: 30vw; height: 50px; padding: 0;" ondrop="drop(event)" ondragover="allowDrop(event)">
+		<input type="button" class="columnButton" value="Load More Buttons" onclick="replenishButtons()">
+	</div>
+	<div class="UIsection" style="overflow: hidden; background: transparent; margin-left: 30vw; width: 30vw; height: 50px; padding: 0;" ondrop="drop(event)" ondragover="allowDrop(event)">
+		<input type="button" class="columnButton" value="Compile Buttons" onclick="compile()">
+	</div>
+	<div class="UIsection" style="overflow: hidden; background: transparent; margin-left: 60vw; width: 30vw; height: 50px; padding: 0;" ondrop="drop(event)" ondragover="allowDrop(event)">
+		<input type="button" class="columnButton" value="View Code" onclick="viewCode()">
+	</div>
 
 	<div class="UIsection" id="blocks" ondrop="drop(event)" ondragover="allowDrop(event)">
-		<input type="button" value="Compile" onclick="compile()">
 	</div>
 
 	<div class="UIsection" id="sandbox" ondrop="drop(event)" ondragover="allowDrop(event)">
@@ -246,7 +324,7 @@
 		<style>
 
 			div.drag-block{
-				width: 300px;
+				width: 23vw;
 				padding-right: 20px;
 				background: transparent;
 				border: 10px solid rgba(0,0,0,0.25);
@@ -257,7 +335,7 @@
 				margin: 10px 0;
 			}
 
-			div.search-block{
+			div.if-else-block{
 				width: 100%;
 				min-height: 50px;
 				padding: 10px;
@@ -268,7 +346,7 @@
 				width: 100%;
 				min-height: 20px;
 				padding-right: 20px;
-				margin: 10px 0 0 0px;
+				margin: 10px 0 10px 0;
 				background: url('gray_sand.png');
 				font-size: 10px;
 				line-height: 20px;
@@ -428,7 +506,7 @@
 	</div>
 
 	<div class="UIsection" id="output" ondrop="drop(event)" ondragover="allowDrop(event)">
-		package vineshAnimal;<br>
+		package hungerScrimmage;<br>
 		<br>
 		import java.awt.Color;<br>
 		import java.util.ArrayList;<br>
@@ -445,7 +523,7 @@
 		import theHungerGames.MoveToward;<br>
 		import theHungerGames.Turn;<br>
 		<br>
-		public class Herbivore1 extends Herbivore {<br>
+		public class Herbivore3 extends Herbivore {<br>
 			<br>
 			static private Color color = new Color(253, 75, 75);<br>
 			<br>
@@ -533,6 +611,8 @@
 
 	</div>
 
+	<div id="screen" onclick="this.innerHTML=''; this.style.height='0vh';"></div>
+
 	<script>
 
 		var output = document.getElementById('customCode');
@@ -562,7 +642,7 @@
 		function cellAnimalBlockCode(id){
 			//getArena().getCell(x,y);
 			$("#" + id + "-insert").children().children()[0].click()
-			tempValue = "target.getCell();<br>";
+			tempValue = "target.getCell()<br>";
 		}
 
 		function AnimalBlockCode(id){
@@ -613,12 +693,56 @@
 			var sandbox = $("#sandbox");
 			var blockArray = sandbox.children();
 			for(var i = 2; i < blockArray.length; i++){
-				alert("#a" + blockArray[i].id);
+				//alert("#a" + blockArray[i].id);
 				$("#a" + blockArray[i].id).click();
 			}
 		}
 
+		function loadCode(type){
+			document.getElementById('loadCarnivore').style.display = 'none';
+			document.getElementById('loadHerbivore').style.display = 'none';
+		}
+
+		function replenishButtons(){
+
+		}
+
+		function viewCode(){
+			var fullCode = document.getElementById('output');
+			var codeScreen = document.getElementById('screen');
+			codeScreen.style.height = '86vh';
+			codeScreen.innerHTML = fullCode.innerHTML;
+		}
+
 	</script>
+
+	<style>
+
+		#screen{
+			background: #1a1a1a;
+			width: 86vw;
+			height: 0vh;
+			padding: 2vh 2vw;
+			bottom: 0;
+			position: fixed;
+			transition: height 1s;
+			font-family: "Consolas";
+			color: white;
+			font-size: 10px;
+			line-height: 15px;
+			overflow-y: scroll;
+		}
+
+			#screen::-webkit-scrollbar{
+				width: 20px !important;
+				background-color: rgba(0,0,0,0.15);
+			}
+
+			#screen::-webkit-scrollbar-thumb{
+				background-color: rgba(200,200,200,0.05);
+			}
+
+	</style>
 
 	<script>
 
@@ -632,6 +756,7 @@
 		blocks.innerHTML += herbivoreEatBlockTemplate({id: "block6",});
 		blocks.innerHTML += carnivoreEatBlockTemplate({id: "block7",});
 		blocks.innerHTML += closestAnimalBlockTemplate({id: "block8",});
+		blocks.innerHTML += ifElseBlockTemplate({id: "block9",});
 
 	</script>
 
