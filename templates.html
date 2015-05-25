@@ -1,0 +1,136 @@
+<script id="entry-template" type="text/x-handlebars-template">
+  <div class="entry">
+    <h1>{{title}}</h1>
+    <div class="body">
+      {{body}}
+    </div>
+  </div>
+</script>
+
+<script id="move-block-template" type="text/x-handlebars-template">
+	<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
+		<input id="a{{id}}"  class="printCode" type="button" onclick='printCode("move-block", this.id.substring(1))'>
+		<div class="move-block">
+			Move 
+			<select id="{{id}}-direction">
+				<option value="UP">Up</option>
+				<option value="RIGHT">Right</option>
+				<option value="DOWN">Down</option>
+				<option value="LEFT">Left</option>
+				<option value="randomDirection()">Randomly</option>
+			</select>
+		</div>
+	</div>
+</script>
+
+<script id="move-toward-block-template" type="text/x-handlebars-template">
+	<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
+		<input id="a{{id}}"  class="printCode" type="button" onclick='printCode("move-toward-block", this.id.substring(1))'>
+		<div class="move-block">
+			Move 
+			<select id="{{id}}-boolean">
+				<option value="true">toward</option>
+				<option value="false">away from</option>
+			</select>
+			 this Cell:
+			<div id="{{id}}-insert" class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
+				<!--Insert Cell Here.-->
+			</div>
+		</div>
+	</div>
+</script>
+
+<script id="cell-coordinates-block-template" type="text/x-handlebars-template">
+	<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
+		<input id="a{{id}}"  class="printCode" type="button" onclick='printCode("cell-coordinate-block", this.id.substring(1))'>
+		<div class="cell-block">
+			Get Cell at: (
+			<input id="{{id}}-x" class="coordinate" type="number" min="0" max="61" value="0"> , 
+			<input id="{{id}}-y" class="coordinate" type="number" min="0" max="61" value="0"> )
+		</div>
+	</div>
+</script>
+
+<script id="cell-animal-block-template" type="text/x-handlebars-template">
+	<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
+		<input id="a{{id}}"  class="printCode" type="button" onclick='printCode("cell-animal-block", this.id.substring(1))'>
+		<div class="cell-block">
+			Get Cell of Animal:
+			<div id="{{id}}-insert" class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
+				<!--Insert Animal Here.-->
+			</div>
+		</div>
+	</div>
+</script>
+
+<script id="mate-block-template" type="text/x-handlebars-template">
+	<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
+			<div class="mate-block">
+				Mate with:
+				<div class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
+					<!--Insert Animal Here.-->
+				</div>
+			</div>
+		</div>
+</script>
+
+<script id="herbivore-eat-block-template" type="text/x-handlebars-template">
+	<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
+			<div class="herbivore-eat-block">
+				Eat if 
+				<input class="coordinate" type="number" min="0" max="10" placeholder="5">
+				 or more Grass units.
+			</div>
+		</div>
+</script>
+
+<script id="carnivore-eat-block-template" type="text/x-handlebars-template">
+	<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
+		<div class="carnivore-eat-block">
+			Eat: 
+			<div class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
+				<!--Insert Animal Here.-->
+			</div>
+		</div>
+	</div>
+</script>
+
+<script id="closest-animal-block-template" type="text/x-handlebars-template">
+	<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
+		<input id="a{{id}}"  class="printCode" type="button" onclick='printCode("animal-block", this.id.substring(1))'>
+		<div class="animal-block">
+			Closest Animal in 
+			<select id="{{id}}-list">
+				<option value="others">Cell</option>
+				<option value="allOthers">Arena</option>
+			</select>
+			 that
+			<select id="{{id}}-type">
+				<option value="if(ani instanceof Carnivore){">is a Carnivore</option>
+				<option value="if(ani instanceof Herbivore){">is a Herbivore</option>
+				<option value="if(checkMateability(ani)){">can Mate with This</option>
+				<option value="if(isPrey(ani)){">This can Eat</option>
+			</select>
+		</div>
+	</div>
+</script>
+
+<script id="if-else-block-template" type="text/x-handlebars-template">
+	<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
+		<input id="a{{id}}"  class="printCode" type="button" onclick='printCode("if-else-block", this.id.substring(1))'>
+		<div class="if-else-block">
+			If this Cell contains:
+			<div id="{{id}}-if" class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
+				<!--Insert Animal Here.-->
+			</div>
+			Then:
+			<div id="{{id}}-then" class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
+				<!--Insert Animal Here.-->
+			</div>
+			Else:
+			<div id="{{id}}-else" class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
+				<!--Insert Animal Here.-->
+			</div>
+		</div>
+	</div>
+</script>

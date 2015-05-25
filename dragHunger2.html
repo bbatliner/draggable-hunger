@@ -1,306 +1,12 @@
 <!DOCTYPE HTML>
 <html>
-<head>
-<style>
+	<head>
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<script src="js/jquery-1.11.3.min.js"></script>
+		<script src="js/handlebars-v3.0.3.js"></script>
+	</head>
 
-	html, body{
-		padding: 0;
-		border: 0;
-		margin: 0;
-		background: url("gray_sand.png");
-	}
-
-	body{
-		background: transparent;
-		width: 90vw;
-		margin: 5vh 5vw;
-	}
-
-	.UIsection{
-		height: 65vh;
-		width: 26vw;
-		margin: 0;
-		padding: 2vw;
-		position: absolute;
-		background: url('gray_sand.png');
-		overflow-y: scroll;
-		overflow-x: hidden;
-	}
-
-			.UIsection::-webkit-scrollbar{
-				width: 20px !important;
-				background-color: rgba(0,0,0,0.15);
-			}
-
-			.UIsection::-webkit-scrollbar-thumb{
-				background-color: rgba(200,200,200,0.05);
-			}
-
-		div#blocks{
-			border-left: 2px dashed white;
-			margin: 40px 0 0 0;
-		}
-
-		div#sandbox{
-			border-left: 2px dashed white;
-			margin: 40px 0 0 30vw;
-		}
-
-		#output{
-			border-left: 2px solid white;
-			border-right: 2px solid white;
-			background: #1a1a1a;
-			margin: 40px 0 0 60vw;
-			font-family: "Consolas";
-			font-size: 10px;
-			line-height: 20px;
-			color: white;
-		}
-
-		div.block-move{
-			width: 200px;
-			height: 50px;
-			background: blue;
-		}
-
-	button-draggable{
-		width: 200px;
-		height: 50px;
-		background: red;
-		padding: 10px;
-	}
-
-	input.printCode{
-		width: 10px;
-		height: 30px;
-		padding: 0;
-		outline: none;
-		border: none;
-		background: black;
-		position: absolute;
-		margin: 0 0 0 -10px;
-	}
-
-		input.printCode:hover{
-			background: white;
-		}
-
-	input.columnButton{
-		width: 23vw;
-		margin: 0 4vw;
-		height: 30px;
-		background: black;
-		border-radius: 15px;
-		font-family: "Consolas";
-		color: white;
-		font-size: 15px;
-		line-height: 30px;
-		border: none;
-		outline: none;
-	}
-
-		input.columnButton:hover{
-			background: white;
-			color: black;
-		}
-
-	input.loadButton{
-		width: 39vw;
-		outline: none;
-		background: transparent;
-		font-family: "Consolas";
-		font-size: 40px;
-		line-height: 50px;
-	}
-
-		input.loadButton:hover{
-			background: white;
-		}
-
-		input#loadCarnivore{
-			float: left;
-			border: 10px solid red;
-			color: red;
-			margin: 0 3vw 20px 3vw;
-		}
-
-		input#loadHerbivore{
-			border: 10px solid green;
-			color: green;
-			margin: 0 3vw 20px 3vw;
-		}
-
-</style>
-<script>
-
-	function allowDrop(ev) {
-	    ev.preventDefault();
-	}
-
-	function drag(ev) {
-	    ev.dataTransfer.setData("text", ev.target.id);
-	}
-
-	function drop(ev) {
-	    ev.preventDefault();
-	    var data = ev.dataTransfer.getData("text");
-	    ev.target.appendChild(document.getElementById(data));
-	}
-
-</script>
-<script src="jquery-1.11.3.min.js"></script>
-<script src="handlebars-v3.0.3.js"></script>
-</head>
-<body>
-
-	<script id="entry-template" type="text/x-handlebars-template">
-	  <div class="entry">
-	    <h1>{{title}}</h1>
-	    <div class="body">
-	      {{body}}
-	    </div>
-	  </div>
-	</script>
-
-	<script id="move-block-template" type="text/x-handlebars-template">
-		<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
-			<input id="a{{id}}"  class="printCode" type="button" onclick='printCode("move-block", this.id.substring(1))'>
-			<div class="move-block">
-				Move 
-				<select id="{{id}}-direction">
-					<option value="UP">Up</option>
-					<option value="RIGHT">Right</option>
-					<option value="DOWN">Down</option>
-					<option value="LEFT">Left</option>
-					<option value="randomDirection()">Randomly</option>
-				</select>
-			</div>
-		</div>
-	</script>
-
-	<script id="move-toward-block-template" type="text/x-handlebars-template">
-		<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
-			<input id="a{{id}}"  class="printCode" type="button" onclick='printCode("move-toward-block", this.id.substring(1))'>
-			<div class="move-block">
-				Move 
-				<select id="{{id}}-boolean">
-					<option value="true">toward</option>
-					<option value="false">away from</option>
-				</select>
-				 this Cell:
-				<div id="{{id}}-insert" class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
-					<!--Insert Cell Here.-->
-				</div>
-			</div>
-		</div>
-	</script>
-
-	<script id="cell-coordinates-block-template" type="text/x-handlebars-template">
-		<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
-			<input id="a{{id}}"  class="printCode" type="button" onclick='printCode("cell-coordinate-block", this.id.substring(1))'>
-			<div class="cell-block">
-				Get Cell at: (
-				<input id="{{id}}-x" class="coordinate" type="number" min="0" max="61" value="0"> , 
-				<input id="{{id}}-y" class="coordinate" type="number" min="0" max="61" value="0"> )
-			</div>
-		</div>
-	</script>
-
-	<script id="cell-animal-block-template" type="text/x-handlebars-template">
-		<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
-			<input id="a{{id}}"  class="printCode" type="button" onclick='printCode("cell-animal-block", this.id.substring(1))'>
-			<div class="cell-block">
-				Get Cell of Animal:
-				<div id="{{id}}-insert" class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
-					<!--Insert Animal Here.-->
-				</div>
-			</div>
-		</div>
-	</script>
-
-	<script id="mate-block-template" type="text/x-handlebars-template">
-		<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
-				<div class="mate-block">
-					Mate with:
-					<div class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
-						<!--Insert Animal Here.-->
-					</div>
-				</div>
-			</div>
-	</script>
-
-	<script id="herbivore-eat-block-template" type="text/x-handlebars-template">
-		<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
-				<div class="herbivore-eat-block">
-					Eat if 
-					<input class="coordinate" type="number" min="0" max="10" placeholder="5">
-					 or more Grass units.
-				</div>
-			</div>
-	</script>
-
-	<script id="carnivore-eat-block-template" type="text/x-handlebars-template">
-		<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
-			<div class="carnivore-eat-block">
-				Eat: 
-				<div class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
-					<!--Insert Animal Here.-->
-				</div>
-			</div>
-		</div>
-	</script>
-	
-	<script id="closest-animal-block-template" type="text/x-handlebars-template">
-		<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
-			<input id="a{{id}}"  class="printCode" type="button" onclick='printCode("animal-block", this.id.substring(1))'>
-			<div class="animal-block">
-				Closest Animal in 
-				<select id="{{id}}-list">
-					<option value="others">Cell</option>
-					<option value="allOthers">Arena</option>
-				</select>
-				 that
-				<select id="{{id}}-type">
-					<option value="if(ani instanceof Carnivore){">is a Carnivore</option>
-					<option value="if(ani instanceof Herbivore){">is a Herbivore</option>
-					<option value="if(checkMateability(ani)){">can Mate with This</option>
-					<option value="if(isPrey(ani)){">This can Eat</option>
-				</select>
-			</div>
-		</div>
-	</script>
-
-	<script id="if-else-block-template" type="text/x-handlebars-template">
-		<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
-			<input id="a{{id}}"  class="printCode" type="button" onclick='printCode("if-else-block", this.id.substring(1))'>
-			<div class="if-else-block">
-				If this Cell contains:
-				<div id="{{id}}-if" class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
-					<!--Insert Animal Here.-->
-				</div>
-				Then:
-				<div id="{{id}}-then" class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
-					<!--Insert Animal Here.-->
-				</div>
-				Else:
-				<div id="{{id}}-else" class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
-					<!--Insert Animal Here.-->
-				</div>
-			</div>
-		</div>
-	</script>
-
-	<script>
-		var moveBlockTemplate = Handlebars.compile($("#move-block-template").html());
-		var moveTowardBlockTemplate = Handlebars.compile($("#move-toward-block-template").html());
-		var cellCoordinatesBlockTemplate = Handlebars.compile($("#cell-coordinates-block-template").html());
-		var cellAnimalBlockTemplate = Handlebars.compile($("#cell-animal-block-template").html());
-		var mateBlockTemplate = Handlebars.compile($("#mate-block-template").html());
-		var herbivoreEatBlockTemplate = Handlebars.compile($("#herbivore-eat-block-template").html());
-		var carnivoreEatBlockTemplate = Handlebars.compile($("#carnivore-eat-block-template").html());
-		var closestAnimalBlockTemplate = Handlebars.compile($("#closest-animal-block-template").html());
-		var ifElseBlockTemplate = Handlebars.compile($("#if-else-block-template").html());
-	</script>
+	<body>
 
 
 	<input id="loadCarnivore" class="loadButton" type="button" value="Carnivore" onclick="loadCode('carnivore');">
@@ -321,187 +27,84 @@
 
 	<div class="UIsection" id="sandbox" ondrop="drop(event)" ondragover="allowDrop(event)">
 
-		<style>
+		<div id="draftBlockSpace" style="display: none;">
+			<div id="drag1" class="drag-block" draggable="true" ondragstart="drag(event)">
+				<div class="search-block">
+					Search 
+					<select>
+						<option value="cell">Cell</option>
+						<option value="arena">Arena</option>
+					</select> for closest:
+					<div class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
+						<!--Insert Commands Here.-->
+					</div>
+				</div>
+			</div>
 
-			div.drag-block{
-				width: 23vw;
-				padding-right: 20px;
-				background: transparent;
-				border: 10px solid rgba(0,0,0,0.25);
-				font-family: "Consolas";
-				color: white;
-				font-size: 15px;
-				line-height: 25px;
-				margin: 10px 0;
-			}
+			<div id="drag2" class="drag-block" draggable="true" ondragstart="drag(event)">
+				<div class="cell-block">
+					Cell at: (
+					<input class="coordinate" type="number" min="0" max="61" placeholder="0"> , 
+					<input class="coordinate" type="number" min="0" max="61" placeholder="0"> )
+				</div>
+			</div>
 
-			div.if-else-block{
-				width: 100%;
-				min-height: 50px;
-				padding: 10px;
-				background: blue;
-			}
+			<div id="drag3" class="drag-block" draggable="true" ondragstart="drag(event)">
+				<div class="cell-block">
+					Cell of Animal:
+					<div class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
+						<!--Insert Animal Here.-->
+					</div>
+				</div>
+			</div>
 
-			div.insert-block{
-				width: 100%;
-				min-height: 20px;
-				padding-right: 20px;
-				margin: 10px 0 10px 0;
-				background: url('gray_sand.png');
-				font-size: 10px;
-				line-height: 20px;
-				/*text-align: center;*/
-			}
+			<div id="drag4" class="drag-block" draggable="true" ondragstart="drag(event)">
+				<div class="move-block">
+					Move 
+					<select>
+						<option value="toward">toward</option>
+						<option value="away">away from</option>
+					</select>
+					 this Cell:
+					<div class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
+						<!--Insert Cell Here.-->
+					</div>
+				</div>
+			</div>
 
-			select{
-				font-family: "Consolas";
-				color: white;
-				font-size: 12px;
-				line-height: 20px;
-				border: none;
-				background: url('gray_sand.png');
-				padding: 2px;
-				outline: none;
-			}
+			<div id="drag5" class="drag-block" draggable="true" ondragstart="drag(event)">
+				<div class="move-block">
+					Move 
+					<select>
+						<option value="up">Up</option>
+						<option value="right">Right</option>
+						<option value="down">Down</option>
+						<option value="left">Left</option>
+					</select>
+				</div>
+			</div>
 
-			option{
-				color: black;
-			}
+			<div id="drag6" class="drag-block" draggable="true" ondragstart="drag(event)">
+				<div class="animal-block">
+					Animal that :
+					<select>
+						<option value="carnivore">is a Carnivore</option>
+						<option value="herbivore">is a Herbivore</option>
+						<option value="herbivore">can Mate with This</option>
+						<option value="herbivore">This can Eat</option>
+					</select>
+				</div>
+			</div>
 
-			div.cell-block{
-				width: 100%;
-				min-height: 20px;
-				padding: 10px;
-				background: green;
-			}
-
-			input.coordinate{
-				width: 30px;
-				font-family: "Consolas";
-				color: white;
-				font-size: 12px;
-				line-height: 20px;
-				border: none;
-				background: url('gray_sand.png');
-				padding: 2px;
-				outline: none;
-			}
-
-			div.move-block{
-				width: 100%;
-				min-height: 20px;
-				padding: 10px;
-				background: orange;
-			}
-
-			div.animal-block{
-				width: 100%;
-				min-height: 20px;
-				padding: 10px;
-				background: purple;
-			}
-
-			div.mate-block{
-				width: 100%;
-				min-height: 20px;
-				padding: 10px;
-				background: #FF66CC;
-			}
-
-			div.herbivore-eat-block{
-				width: 100%;
-				min-height: 20px;
-				padding: 10px;
-				background: green;
-			}
-
-			div.carnivore-eat-block{
-				width: 100%;
-				min-height: 20px;
-				padding: 10px;
-				background: red;
-			}
-
-		</style>
-
-<div id="draftBlockSpace" style="display: none;">
-		<div id="drag1" class="drag-block" draggable="true" ondragstart="drag(event)">
-			<div class="search-block">
-				Search 
-				<select>
-					<option value="cell">Cell</option>
-					<option value="arena">Arena</option>
-				</select> for closest:
-				<div class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
-					<!--Insert Commands Here.-->
+			<div id="drag7" class="drag-block" draggable="true" ondragstart="drag(event)">
+				<div class="mate-block">
+					Mate with Animal:
+					<div class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
+						<!--Insert Animal Here.-->
+					</div>
 				</div>
 			</div>
 		</div>
-
-		<div id="drag2" class="drag-block" draggable="true" ondragstart="drag(event)">
-			<div class="cell-block">
-				Cell at: (
-				<input class="coordinate" type="number" min="0" max="61" placeholder="0"> , 
-				<input class="coordinate" type="number" min="0" max="61" placeholder="0"> )
-			</div>
-		</div>
-
-		<div id="drag3" class="drag-block" draggable="true" ondragstart="drag(event)">
-			<div class="cell-block">
-				Cell of Animal:
-				<div class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
-					<!--Insert Animal Here.-->
-				</div>
-			</div>
-		</div>
-
-		<div id="drag4" class="drag-block" draggable="true" ondragstart="drag(event)">
-			<div class="move-block">
-				Move 
-				<select>
-					<option value="toward">toward</option>
-					<option value="away">away from</option>
-				</select>
-				 this Cell:
-				<div class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
-					<!--Insert Cell Here.-->
-				</div>
-			</div>
-		</div>
-
-		<div id="drag5" class="drag-block" draggable="true" ondragstart="drag(event)">
-			<div class="move-block">
-				Move 
-				<select>
-					<option value="up">Up</option>
-					<option value="right">Right</option>
-					<option value="down">Down</option>
-					<option value="left">Left</option>
-				</select>
-			</div>
-		</div>
-
-		<div id="drag6" class="drag-block" draggable="true" ondragstart="drag(event)">
-			<div class="animal-block">
-				Animal that :
-				<select>
-					<option value="carnivore">is a Carnivore</option>
-					<option value="herbivore">is a Herbivore</option>
-					<option value="herbivore">can Mate with This</option>
-					<option value="herbivore">This can Eat</option>
-				</select>
-			</div>
-		</div>
-
-		<div id="drag7" class="drag-block" draggable="true" ondragstart="drag(event)">
-			<div class="mate-block">
-				Mate with Animal:
-				<div class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
-					<!--Insert Animal Here.-->
-				</div>
-			</div>
-		</div>
-</div>
 
 	</div>
 
@@ -613,154 +216,7 @@
 
 	<div id="screen" onclick="this.innerHTML=''; this.style.height='0vh';"></div>
 
-	<script>
-
-		var output = document.getElementById('customCode');
-		var tempValue = "temporary";
-
-		function moveBlockCode(id){
-			//return new Move(Direction.randomDirection());
-			output.innerHTML += "return new Move(Direction." + $("#" + id + "-direction option:selected").val() + ");<br>";
-		}
-
-		function moveTowardBlockCode(id){
-			//return new MoveToward(this.getCell(), closestPredator.getCell(), false);
-			//$("#" + id + "-direction option:selected").val()
-			
-			var toward = $("#" + id + "-boolean option:selected").val();
-			$("#" + id + "-insert").children().children()[0].click();
-			output.innerHTML += "return new MoveToward(this.getCell(), ";
-				output.innerHTML += tempValue;
-			output.innerHTML += ", " + toward + ");<br>";
-		}
-
-		function cellCoordinateBlockCode(id){
-			//getArena().getCell(x,y);
-			tempValue = "getArena().getCell(" + $("#" + id + "-x").val() + ", " + $("#" + id + "-y").val() + ")";
-		}
-
-		function cellAnimalBlockCode(id){
-			//getArena().getCell(x,y);
-			$("#" + id + "-insert").children().children()[0].click()
-			tempValue = "target.getCell()<br>";
-		}
-
-		function AnimalBlockCode(id){
-			//getArena().getCell(x,y);
-			var list = $("#" + id + "-list").val();
-			var target = $("#" + id + "-type").val();;
-			output.innerHTML += "for(Animal ani : " + list + "){<br>";
-			output.innerHTML += target + "<br>";
-			output.innerHTML += "target = ani;<br>"
-			output.innerHTML += "}<br>"
-			output.innerHTML += "}<br>"
-
-
-
-			$("#" + id + "-insert").children().children()[0].click()
-			output.innerHTML += ".getCell()";
-		}
-
-		function mateBlockCode(id){
-
-		}
-
-		function printCode(blockType, id){
-			//alert(id);
-			switch(blockType){
-				case 'move-block':
-					moveBlockCode(id);
-					break;
-				case 'move-toward-block':
-					moveTowardBlockCode(id);
-					break;
-				case 'cell-coordinate-block':
-					cellCoordinateBlockCode(id);
-					break;
-				case 'cell-animal-block':
-					cellAnimalBlockCode(id);
-					break;
-				case 'animal-block':
-					AnimalBlockCode(id);
-					break;
-				case 'mate-block':
-					mateBlockCode(id);
-					break;
-			}
-		}
-
-		function compile(){
-			var sandbox = $("#sandbox");
-			var blockArray = sandbox.children();
-			for(var i = 2; i < blockArray.length; i++){
-				//alert("#a" + blockArray[i].id);
-				$("#a" + blockArray[i].id).click();
-			}
-		}
-
-		function loadCode(type){
-			document.getElementById('loadCarnivore').style.display = 'none';
-			document.getElementById('loadHerbivore').style.display = 'none';
-		}
-
-		function replenishButtons(){
-
-		}
-
-		function viewCode(){
-			var fullCode = document.getElementById('output');
-			var codeScreen = document.getElementById('screen');
-			codeScreen.style.height = '86vh';
-			codeScreen.innerHTML = fullCode.innerHTML;
-		}
-
-	</script>
-
-	<style>
-
-		#screen{
-			background: #1a1a1a;
-			width: 86vw;
-			height: 0vh;
-			padding: 2vh 2vw;
-			bottom: 0;
-			position: fixed;
-			transition: height 1s;
-			font-family: "Consolas";
-			color: white;
-			font-size: 10px;
-			line-height: 15px;
-			overflow-y: scroll;
-		}
-
-			#screen::-webkit-scrollbar{
-				width: 20px !important;
-				background-color: rgba(0,0,0,0.15);
-			}
-
-			#screen::-webkit-scrollbar-thumb{
-				background-color: rgba(200,200,200,0.05);
-			}
-
-	</style>
-
-	<script>
-
-		var blocks = document.getElementById('blocks');
-
-		blocks.innerHTML += moveBlockTemplate({id: "block1",});
-		blocks.innerHTML += moveTowardBlockTemplate({id: "block2",});
-		blocks.innerHTML += cellCoordinatesBlockTemplate({id: "block3",});
-		blocks.innerHTML += cellAnimalBlockTemplate({id: "block4",});
-		blocks.innerHTML += mateBlockTemplate({id: "block5",});
-		blocks.innerHTML += herbivoreEatBlockTemplate({id: "block6",});
-		blocks.innerHTML += carnivoreEatBlockTemplate({id: "block7",});
-		blocks.innerHTML += closestAnimalBlockTemplate({id: "block8",});
-		blocks.innerHTML += ifElseBlockTemplate({id: "block9",});
-
-	</script>
-
-
+	<script src="js/index.js"></script>
 
 </body>
 </html>

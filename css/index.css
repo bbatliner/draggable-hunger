@@ -1,0 +1,249 @@
+html, body{
+	padding: 0;
+	border: 0;
+	margin: 0;
+	background: url("images/gray_sand.png");
+}
+
+body{
+	background: transparent;
+	width: 90vw;
+	margin: 5vh 5vw;
+}
+
+.UIsection{
+	height: 65vh;
+	width: 26vw;
+	margin: 0;
+	padding: 2vw;
+	position: absolute;
+	background: url('images/gray_sand.png');
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+.UIsection::-webkit-scrollbar{
+	width: 20px !important;
+	background-color: rgba(0,0,0,0.15);
+}
+
+.UIsection::-webkit-scrollbar-thumb{
+	background-color: rgba(200,200,200,0.05);
+}
+
+.UIsection div.drag-block{
+	width: 23vw;
+	padding-right: 20px;
+	background: transparent;
+	border: 10px solid rgba(0,0,0,0.25);
+	font-family: "Consolas";
+	color: white;
+	font-size: 15px;
+	line-height: 25px;
+	margin: 10px 0;
+}
+
+.UIsection div.if-else-block{
+	width: 100%;
+	min-height: 50px;
+	padding: 10px;
+	background: blue;
+}
+
+.UIsection div.insert-block{
+	width: 100%;
+	min-height: 20px;
+	padding-right: 20px;
+	margin: 10px 0 10px 0;
+	background: url('images/gray_sand.png');
+	font-size: 10px;
+	line-height: 20px;
+	/*text-align: center;*/
+}
+
+.UIsection select{
+	font-family: "Consolas";
+	color: white;
+	font-size: 12px;
+	line-height: 20px;
+	border: none;
+	background: url('images/gray_sand.png');
+	padding: 2px;
+	outline: none;
+}
+
+.UIsection option{
+	color: black;
+}
+
+.UIsection div.cell-block{
+	width: 100%;
+	min-height: 20px;
+	padding: 10px;
+	background: green;
+}
+
+.UIsection input.coordinate{
+	width: 30px;
+	font-family: "Consolas";
+	color: white;
+	font-size: 12px;
+	line-height: 20px;
+	border: none;
+	background: url('images/gray_sand.png');
+	padding: 2px;
+	outline: none;
+}
+
+.UIsection div.move-block{
+	width: 100%;
+	min-height: 20px;
+	padding: 10px;
+	background: orange;
+}
+
+.UIsection div.animal-block{
+	width: 100%;
+	min-height: 20px;
+	padding: 10px;
+	background: purple;
+}
+
+.UIsection div.mate-block{
+	width: 100%;
+	min-height: 20px;
+	padding: 10px;
+	background: #FF66CC;
+}
+
+.UIsection div.herbivore-eat-block{
+	width: 100%;
+	min-height: 20px;
+	padding: 10px;
+	background: green;
+}
+
+.UIsection div.carnivore-eat-block{
+	width: 100%;
+	min-height: 20px;
+	padding: 10px;
+	background: red;
+}
+
+div#blocks{
+	border-left: 2px dashed white;
+	margin: 40px 0 0 0;
+}
+
+div#sandbox{
+	border-left: 2px dashed white;
+	margin: 40px 0 0 30vw;
+}
+
+#output{
+	border-left: 2px solid white;
+	border-right: 2px solid white;
+	background: #1a1a1a;
+	margin: 40px 0 0 60vw;
+	font-family: "Consolas";
+	font-size: 10px;
+	line-height: 20px;
+	color: white;
+}
+
+div.block-move{
+	width: 200px;
+	height: 50px;
+	background: blue;
+}
+
+button-draggable{
+	width: 200px;
+	height: 50px;
+	background: red;
+	padding: 10px;
+}
+
+input.printCode{
+	width: 10px;
+	height: 30px;
+	padding: 0;
+	outline: none;
+	border: none;
+	background: black;
+	position: absolute;
+	margin: 0 0 0 -10px;
+}
+
+input.printCode:hover{
+	background: white;
+}
+
+input.columnButton{
+	width: 23vw;
+	margin: 0 4vw;
+	height: 30px;
+	background: black;
+	border-radius: 15px;
+	font-family: "Consolas";
+	color: white;
+	font-size: 15px;
+	line-height: 30px;
+	border: none;
+	outline: none;
+}
+
+input.columnButton:hover{
+	background: white;
+	color: black;
+}
+
+input.loadButton{
+	width: 39vw;
+	outline: none;
+	background: transparent;
+	font-family: "Consolas";
+	font-size: 40px;
+	line-height: 50px;
+}
+
+input.loadButton:hover{
+	background: white;
+}
+
+input#loadCarnivore{
+	float: left;
+	border: 10px solid red;
+	color: red;
+	margin: 0 3vw 20px 3vw;
+}
+
+input#loadHerbivore{
+	border: 10px solid green;
+	color: green;
+	margin: 0 3vw 20px 3vw;
+}
+
+#screen{
+	background: #1a1a1a;
+	width: 86vw;
+	height: 0vh;
+	padding: 2vh 2vw;
+	bottom: 0;
+	position: fixed;
+	transition: height 1s;
+	font-family: "Consolas";
+	color: white;
+	font-size: 10px;
+	line-height: 15px;
+	overflow-y: scroll;
+}
+
+	#screen::-webkit-scrollbar{
+		width: 20px !important;
+		background-color: rgba(0,0,0,0.15);
+	}
+
+	#screen::-webkit-scrollbar-thumb{
+		background-color: rgba(200,200,200,0.05);
+	}
