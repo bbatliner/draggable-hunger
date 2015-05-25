@@ -49,6 +49,10 @@
 			border-right: 2px solid white;
 			background: #1a1a1a;
 			margin: 0 0 0 60vw;
+			font-family: "Consolas";
+			font-size: 10px;
+			line-height: 20px;
+			color: white;
 		}
 
 		div.block-move{
@@ -81,7 +85,6 @@
 	    ev.target.appendChild(document.getElementById(data));
 	}
 
-
 </script>
 <script src="jquery-1.11.3.min.js"></script>
 <script src="handlebars-v3.0.3.js"></script>
@@ -101,12 +104,14 @@
 		<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
 			<div class="move-block">
 				Move 
-				<select>
-					<option value="up">Up</option>
-					<option value="right">Right</option>
-					<option value="down">Down</option>
-					<option value="left">Left</option>
+				<select id="{{id}}-direction">
+					<option value="UP">Up</option>
+					<option value="RIGHT">Right</option>
+					<option value="DOWN">Down</option>
+					<option value="LEFT">Left</option>
+					<option value="randomDirection()">Randomly</option>
 				</select>
+				<input id={{id}} class="printCode" type="button" onclick='printCode("move-block", this.id)'>
 			</div>
 		</div>
 	</script>
@@ -115,14 +120,15 @@
 		<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
 			<div class="move-block">
 				Move 
-				<select>
-					<option value="toward">toward</option>
-					<option value="away">away from</option>
+				<select id="{{id}}-boolean">
+					<option value="true">toward</option>
+					<option value="false">away from</option>
 				</select>
 				 this Cell:
-				<div class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
+				<div id="{{id}}-insert" class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
 					<!--Insert Cell Here.-->
 				</div>
+				<input id={{id}} class="printCode" type="button" onclick='printCode("move-toward-block", this.id)'>
 			</div>
 		</div>
 	</script>
@@ -131,9 +137,10 @@
 		<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
 			<div class="cell-block">
 				Get Cell at: (
-				<input class="coordinate" type="number" min="0" max="61" placeholder="0"> , 
-				<input class="coordinate" type="number" min="0" max="61" placeholder="0"> )
+				<input id="{{id}}-x" class="coordinate" type="number" min="0" max="61" value="0"> , 
+				<input id="{{id}}-y" class="coordinate" type="number" min="0" max="61" value="0"> )
 			</div>
+			<input id="a{{id}}"  class="printCode" type="button" onclick='printCode("cell-coordinate-block", this.id.substring(1))'>
 		</div>
 	</script>
 
@@ -141,10 +148,11 @@
 		<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
 			<div class="cell-block">
 				Get Cell of Animal:
-				<div class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
+				<div id="{{id}}-insert" class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
 					<!--Insert Animal Here.-->
 				</div>
 			</div>
+			<input id="a{{id}}"  class="printCode" type="button" onclick='printCode("cell-animal-block", this.id.substring(1))'>
 		</div>
 	</script>
 
@@ -232,8 +240,8 @@
 				margin: 10px 0;
 			}
 
-			div.search-block
-							width: 100%;
+			div.search-block{
+				width: 100%;
 				min-height: 50px;
 				padding: 10px;
 				background: blue;
@@ -321,8 +329,7 @@
 
 		</style>
 
-	<!--<div>
-
+<div id="draftBlockSpace" style="display: none;">
 		<div id="drag1" class="drag-block" draggable="true" ondragstart="drag(event)">
 			<div class="search-block">
 				Search 
@@ -399,14 +406,70 @@
 				</div>
 			</div>
 		</div>
-
-	</div>-->
+</div>
 
 	</div>
 
 	<div class="UIsection" id="output" ondrop="drop(event)" ondragover="allowDrop(event)">
 
 	</div>
+
+	<script>
+
+		var output = document.getElementById('output');
+
+		function moveBlockCode(id){
+			//return new Move(Direction.randomDirection());
+			output.innerHTML += "return new Move(Direction." + $("#" + id + "-direction option:selected").val() + ");<br>";
+		}
+
+		function moveTowardBlockCode(id){
+			//return new MoveToward(this.getCell(), closestPredator.getCell(), false);
+			//$("#" + id + "-direction option:selected").val()
+			
+			var toward = $("#" + id + "-boolean option:selected").val();
+			output.innerHTML += "return new MoveToward(this.getCell(), ";
+				$("#" + id + "-insert").children().children()[1].click()
+			output.innerHTML += ", " + toward + ");<br>";
+		}
+
+		function cellCoordinateBlockCode(id){
+			//getArena().getCell(x,y);
+			output.innerHTML += "getArena().getCell(" + $("#" + id + "-x").val() + ", " + $("#" + id + "-y").val() + ")";
+		}
+
+		function cellAnimalBlockCode(id){
+			//getArena().getCell(x,y);
+			$("#" + id + "-insert").children().children()[1].click()
+			output.innerHTML += ".getCell()";
+		}
+
+		function mateBlockCode(id){
+
+		}
+
+		function printCode(blockType, id){
+			//alert(id);
+			switch(blockType){
+				case 'move-block':
+					moveBlockCode(id);
+					break;
+				case 'move-toward-block':
+					moveTowardBlockCode(id);
+					break;
+				case 'cell-coordinate-block':
+					cellCoordinateBlockCode(id);
+					break;
+				case 'cell-animal-block':
+					cellCoordinateBlockCode(id);
+					break;
+				case 'mate-block':
+					mateBlockCode(id);
+					break;
+			}
+		}
+
+	</script>
 
 	<script>
 
