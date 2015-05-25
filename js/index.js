@@ -39,6 +39,10 @@ $('#templates').load('templates.html', function() {
 	blocks.append(carnivoreEatBlockTemplate({id: "block7",}));
 	blocks.append(closestAnimalBlockTemplate({id: "block8",}));
 
-	blocks.append(geneSliderTemplate({name: 'speed'}));
-	$('#slider-speed').slider();
+	blocks.append(geneSliderTemplate({name: 'Speed'}));
+	$('#gene-Speed .gene-slider').slider({
+		change: function(event, ui) {
+	      $('#gene-Speed .ui-slider-handle').text(ui.value / 100);
+	    }
+	});
 });

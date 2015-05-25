@@ -157,3 +157,20 @@ button-draggable{
 	padding: 10px;
 	background: red;
 }
+
+.gene {
+	font-family: "Consolas";
+	color: white;
+}
+
+.gene .gene-slider {
+	display: inline-block;
+	width: 75%;
+	margin-left: 10px;
+	margin-bottom: -3px;
+}
+
+.ui-slider-handle {
+	width: 40px !important; /* override jquery-ui */
+	text-align: center;
+}
