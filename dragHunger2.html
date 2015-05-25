@@ -68,6 +68,21 @@
 		padding: 10px;
 	}
 
+	input.printCode{
+		width: 10px;
+		height: 30px;
+		padding: 0;
+		outline: none;
+		border: none;
+		background: black;
+		position: absolute;
+		margin: 0 0 0 -10px;
+	}
+
+		input.printCode:hover{
+			background: white;
+		}
+
 </style>
 <script>
 
@@ -102,6 +117,7 @@
 
 	<script id="move-block-template" type="text/x-handlebars-template">
 		<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
+			<input id={{id}} class="printCode" type="button" onclick='printCode("move-block", this.id)'>
 			<div class="move-block">
 				Move 
 				<select id="{{id}}-direction">
@@ -111,13 +127,13 @@
 					<option value="LEFT">Left</option>
 					<option value="randomDirection()">Randomly</option>
 				</select>
-				<input id={{id}} class="printCode" type="button" onclick='printCode("move-block", this.id)'>
 			</div>
 		</div>
 	</script>
 
 	<script id="move-toward-block-template" type="text/x-handlebars-template">
 		<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
+			<input id={{id}} class="printCode" type="button" onclick='printCode("move-toward-block", this.id)'>
 			<div class="move-block">
 				Move 
 				<select id="{{id}}-boolean">
@@ -128,31 +144,30 @@
 				<div id="{{id}}-insert" class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
 					<!--Insert Cell Here.-->
 				</div>
-				<input id={{id}} class="printCode" type="button" onclick='printCode("move-toward-block", this.id)'>
 			</div>
 		</div>
 	</script>
 
 	<script id="cell-coordinates-block-template" type="text/x-handlebars-template">
 		<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
+			<input id="a{{id}}"  class="printCode" type="button" onclick='printCode("cell-coordinate-block", this.id.substring(1))'>
 			<div class="cell-block">
 				Get Cell at: (
 				<input id="{{id}}-x" class="coordinate" type="number" min="0" max="61" value="0"> , 
 				<input id="{{id}}-y" class="coordinate" type="number" min="0" max="61" value="0"> )
 			</div>
-			<input id="a{{id}}"  class="printCode" type="button" onclick='printCode("cell-coordinate-block", this.id.substring(1))'>
 		</div>
 	</script>
 
 	<script id="cell-animal-block-template" type="text/x-handlebars-template">
 		<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
+			<input id="a{{id}}"  class="printCode" type="button" onclick='printCode("cell-animal-block", this.id.substring(1))'>
 			<div class="cell-block">
 				Get Cell of Animal:
 				<div id="{{id}}-insert" class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
 					<!--Insert Animal Here.-->
 				</div>
 			</div>
-			<input id="a{{id}}"  class="printCode" type="button" onclick='printCode("cell-animal-block", this.id.substring(1))'>
 		</div>
 	</script>
 
@@ -190,18 +205,19 @@
 	
 	<script id="closest-animal-block-template" type="text/x-handlebars-template">
 		<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
+			<input id="a{{id}}"  class="printCode" type="button" onclick='printCode("animal-block", this.id.substring(1))'>
 			<div class="animal-block">
 				Closest Animal in 
-				<select>
-					<option value="cell">Cell</option>
-					<option value="arena">Arena</option>
+				<select id="{{id}}-list">
+					<option value="others">Cell</option>
+					<option value="allOthers">Arena</option>
 				</select>
 				 that
-				<select>
-					<option value="carnivore">is a Carnivore</option>
-					<option value="herbivore">is a Herbivore</option>
-					<option value="herbivore">can Mate with This</option>
-					<option value="herbivore">This can Eat</option>
+				<select id="{{id}}-type">
+					<option value="if(ani instanceOf Carnivore){">is a Carnivore</option>
+					<option value="if(ani instanceOf Herbivore){">is a Herbivore</option>
+					<option value="if(checkMateability(ani)){">can Mate with This</option>
+					<option value="if(isPrey(ani)){">This can Eat</option>
 				</select>
 			</div>
 		</div>
@@ -411,12 +427,51 @@
 	</div>
 
 	<div class="UIsection" id="output" ondrop="drop(event)" ondragover="allowDrop(event)">
-
+		package vineshAnimal;<br>
+		<br>
+		import java.awt.Color;<br>
+		import java.util.ArrayList;<br>
+		import java.util.List;<br>
+		<br>
+		import theHungerGames.Animal;<br>
+		import theHungerGames.Carnivore;<br>
+		import theHungerGames.Direction;<br>
+		import theHungerGames.GeneType;<br>
+		import theHungerGames.Herbivore;<br>
+		import theHungerGames.HerbivoreEat;<br>
+		import theHungerGames.Mate;<br>
+		import theHungerGames.Move;<br>
+		import theHungerGames.MoveToward;<br>
+		import theHungerGames.Turn;<br>
+		<br>
+		public class Herbivore1 extends Herbivore {<br>
+			<br>
+			static private Color color = new Color(253, 75, 75);<br>
+			<br>
+			@Override<br>
+			protected Color getColor() {<br>
+			return color;<br>
+			}<br>
+			<br>
+			@Override<br>
+			public String getName() {<br>
+				return "Guna eats Spinach";<br>
+			}<br>
+			<br>
+			@Override<br>
+			protected Turn userDefinedChooseMove() {<br>
+			List<Animal> others = getCell().getOtherAnimals(this);<br>
+			List<Animal> allOthers = getArena().getAllAnimals(this);<br>
+			Animal target = null;<br>
+			<div id="customCode"></div><br>
+			}<br>
+		}
 	</div>
 
 	<script>
 
-		var output = document.getElementById('output');
+		var output = document.getElementById('customCode');
+		var tempValue = "temporary";
 
 		function moveBlockCode(id){
 			//return new Move(Direction.randomDirection());
@@ -428,19 +483,36 @@
 			//$("#" + id + "-direction option:selected").val()
 			
 			var toward = $("#" + id + "-boolean option:selected").val();
+			$("#" + id + "-insert").children().children()[0].click();
 			output.innerHTML += "return new MoveToward(this.getCell(), ";
-				$("#" + id + "-insert").children().children()[1].click()
+				output.innerHTML += tempValue;
 			output.innerHTML += ", " + toward + ");<br>";
 		}
 
 		function cellCoordinateBlockCode(id){
 			//getArena().getCell(x,y);
-			output.innerHTML += "getArena().getCell(" + $("#" + id + "-x").val() + ", " + $("#" + id + "-y").val() + ")";
+			tempValue = "getArena().getCell(" + $("#" + id + "-x").val() + ", " + $("#" + id + "-y").val() + ")";
 		}
 
 		function cellAnimalBlockCode(id){
 			//getArena().getCell(x,y);
-			$("#" + id + "-insert").children().children()[1].click()
+			$("#" + id + "-insert").children().children()[0].click()
+			tempValue = "target.getCell();<br>";
+		}
+
+		function AnimalBlockCode(id){
+			//getArena().getCell(x,y);
+			var list = $("#" + id + "-list").val();
+			var target = $("#" + id + "-type").val();;
+			output.innerHTML += "for(Animal ani : " + list + "){<br>";
+			output.innerHTML += target + "<br>";
+			output.innerHTML += "target = ani;<br>"
+			output.innerHTML += "}<br>"
+			output.innerHTML += "}<br>"
+
+
+
+			$("#" + id + "-insert").children().children()[0].click()
 			output.innerHTML += ".getCell()";
 		}
 
@@ -461,7 +533,10 @@
 					cellCoordinateBlockCode(id);
 					break;
 				case 'cell-animal-block':
-					cellCoordinateBlockCode(id);
+					cellAnimalBlockCode(id);
+					break;
+				case 'animal-block':
+					AnimalBlockCode(id);
 					break;
 				case 'mate-block':
 					mateBlockCode(id);
