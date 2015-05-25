@@ -1,0 +1,159 @@
+html, body{
+	padding: 0;
+	border: 0;
+	margin: 0;
+	background: black;
+}
+
+body{
+	background: white;
+	width: 90vw;
+	margin: 5vw;
+}
+
+div.UIsection{
+height: 80vh;
+	width: 26vw;
+	margin: 0;
+	padding: 2vw;
+	position: absolute;
+	background: url('gray_sand.png');
+	overflow-y: scroll;
+}
+
+div.UIsection::-webkit-scrollbar{
+	width: 20px !important;
+	background-color: rgba(0,0,0,0.15);
+}
+
+div.UIsection::-webkit-scrollbar-thumb{
+	background-color: rgba(200,200,200,0.05);
+}
+
+div#blocks{
+	border-left: 2px dashed white;
+}
+
+div#sandbox{
+	border-left: 2px dashed white;
+	margin: 0 0 0 30vw;
+}
+
+div#output{
+	border-left: 2px solid white;
+	border-right: 2px solid white;
+	background: #1a1a1a;
+	margin: 0 0 0 60vw;
+}
+
+div.block-move{
+	width: 200px;
+	height: 50px;
+	background: blue;
+}
+
+button-draggable{
+	width: 200px;
+	height: 50px;
+	background: red;
+	padding: 10px;
+}
+
+.UIsection div.drag-block{
+	width: 300px;
+	padding-right: 20px;
+	background: transparent;
+	border: 10px solid rgba(0,0,0,0.25);
+	font-family: "Consolas";
+	color: white;
+	font-size: 15px;
+	line-height: 25px;
+	margin: 10px 0;
+}
+
+.UIsection div.search-block {
+	width: 100%;
+	min-height: 50px;
+	padding: 10px;
+	background: blue;
+}
+
+.UIsection div.insert-block{
+	width: 100%;
+	min-height: 20px;
+	padding-right: 20px;
+	margin: 10px 0 0 0px;
+	background: url('gray_sand.png');
+	font-size: 10px;
+	line-height: 20px;
+	/*text-align: center;*/
+}
+
+.UIsection select{
+	font-family: "Consolas";
+	color: white;
+	font-size: 12px;
+	line-height: 20px;
+	border: none;
+	background: url('gray_sand.png');
+	padding: 2px;
+	outline: none;
+}
+
+.UIsection option{
+	color: black;
+}
+
+.UIsection div.cell-block{
+	width: 100%;
+	min-height: 20px;
+	padding: 10px;
+	background: green;
+}
+
+.UIsection input.coordinate{
+	width: 30px;
+	font-family: "Consolas";
+	color: white;
+	font-size: 12px;
+	line-height: 20px;
+	border: none;
+	background: url('gray_sand.png');
+	padding: 2px;
+	outline: none;
+}
+
+.UIsection div.move-block{
+	width: 100%;
+	min-height: 20px;
+	padding: 10px;
+	background: orange;
+}
+
+.UIsection div.animal-block{
+	width: 100%;
+	min-height: 20px;
+	padding: 10px;
+	background: purple;
+}
+
+.UIsection div.mate-block{
+	width: 100%;
+	min-height: 20px;
+	padding: 10px;
+	background: #FF66CC;
+}
+
+.UIsection div.herbivore-eat-block{
+	width: 100%;
+	min-height: 20px;
+	padding: 10px;
+	background: green;
+}
+
+.UIsection div.carnivore-eat-block{
+	width: 100%;
+	min-height: 20px;
+	padding: 10px;
+	background: red;
+}

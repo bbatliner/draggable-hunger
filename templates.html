@@ -1,0 +1,110 @@
+<script id="entry-template" type="text/x-handlebars-template">
+  <div class="entry">
+    <h1>{{title}}</h1>
+    <div class="body">
+      {{body}}
+    </div>
+  </div>
+</script>
+
+<script id="move-block-template" type="text/x-handlebars-template">
+	<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
+		<div class="move-block">
+			Move 
+			<select>
+				<option value="up">Up</option>
+				<option value="right">Right</option>
+				<option value="down">Down</option>
+				<option value="left">Left</option>
+			</select>
+		</div>
+	</div>
+</script>
+
+<script id="move-toward-block-template" type="text/x-handlebars-template">
+	<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
+		<div class="move-block">
+			Move 
+			<select>
+				<option value="toward">toward</option>
+				<option value="away">away from</option>
+			</select>
+			 this Cell:
+			<div class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
+				<!--Insert Cell Here.-->
+			</div>
+		</div>
+	</div>
+</script>
+
+<script id="cell-coordinates-block-template" type="text/x-handlebars-template">
+	<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
+		<div class="cell-block">
+			Get Cell at: (
+			<input class="coordinate" type="number" min="0" max="61" placeholder="0"> , 
+			<input class="coordinate" type="number" min="0" max="61" placeholder="0"> )
+		</div>
+	</div>
+</script>
+
+<script id="cell-animal-block-template" type="text/x-handlebars-template">
+	<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
+		<div class="cell-block">
+			Get Cell of Animal:
+			<div class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
+				<!--Insert Animal Here.-->
+			</div>
+		</div>
+	</div>
+</script>
+
+<script id="mate-block-template" type="text/x-handlebars-template">
+	<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
+			<div class="mate-block">
+				Mate with:
+				<div class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
+					<!--Insert Animal Here.-->
+				</div>
+			</div>
+		</div>
+</script>
+
+<script id="herbivore-eat-block-template" type="text/x-handlebars-template">
+	<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
+			<div class="herbivore-eat-block">
+				Eat if 
+				<input class="coordinate" type="number" min="0" max="10" placeholder="5">
+				 or more Grass units.
+			</div>
+		</div>
+</script>
+
+<script id="carnivore-eat-block-template" type="text/x-handlebars-template">
+	<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
+		<div class="carnivore-eat-block">
+			Eat: 
+			<div class="insert-block" ondrop="drop(event)" ondragover="allowDrop(event)">
+				<!--Insert Animal Here.-->
+			</div>
+		</div>
+	</div>
+</script>
+
+<script id="closest-animal-block-template" type="text/x-handlebars-template">
+	<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
+		<div class="animal-block">
+			Closest Animal in 
+			<select>
+				<option value="cell">Cell</option>
+				<option value="arena">Arena</option>
+			</select>
+			 that
+			<select>
+				<option value="carnivore">is a Carnivore</option>
+				<option value="herbivore">is a Herbivore</option>
+				<option value="herbivore">can Mate with This</option>
+				<option value="herbivore">This can Eat</option>
+			</select>
+		</div>
+	</div>
+</script>
