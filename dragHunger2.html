@@ -117,7 +117,7 @@
 
 	<script id="move-block-template" type="text/x-handlebars-template">
 		<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
-			<input id={{id}} class="printCode" type="button" onclick='printCode("move-block", this.id)'>
+			<input id="a{{id}}"  class="printCode" type="button" onclick='printCode("move-block", this.id.substring(1))'>
 			<div class="move-block">
 				Move 
 				<select id="{{id}}-direction">
@@ -133,7 +133,7 @@
 
 	<script id="move-toward-block-template" type="text/x-handlebars-template">
 		<div id={{id}} class="drag-block" draggable="true" ondragstart="drag(event)">
-			<input id={{id}} class="printCode" type="button" onclick='printCode("move-toward-block", this.id)'>
+			<input id="a{{id}}"  class="printCode" type="button" onclick='printCode("move-toward-block", this.id.substring(1))'>
 			<div class="move-block">
 				Move 
 				<select id="{{id}}-boolean">
@@ -238,6 +238,7 @@
 
 
 	<div class="UIsection" id="blocks" ondrop="drop(event)" ondragover="allowDrop(event)">
+		<input type="button" value="Compile" onclick="compile()">
 	</div>
 
 	<div class="UIsection" id="sandbox" ondrop="drop(event)" ondragover="allowDrop(event)">
@@ -465,7 +466,71 @@
 			Animal target = null;<br>
 			<div id="customCode"></div><br>
 			}<br>
+			<br>
+			@Override<br>
+			protected double getInitialGene(GeneType type) {<br>
+				double ranNum = getRandom().nextGaussian() * .1 + .5;<br>
+				<br>
+				switch(type) {<br>
+				case SIZE1:<br>
+					return ranNum;<br>
+					<br>
+				case SIZE2:<br>
+					return ranNum;<br>
+					<br>
+				case SPEED1:<br>
+					return ranNum;<br>
+					<br>
+				case SPEED2:<br>
+					return ranNum;<br>
+					<br>
+				case MARKINGS1:<br>
+					return ranNum;<br>
+					<br>
+				case MARKINGS2:<br>
+					return ranNum;<br>
+					<br>
+				case FERTILITY:<br>
+					return ranNum;<br>
+					<br>
+				default:<br>
+					throw new RuntimeException("Never reach here");<br>
+					<br>
+				}<br>
+			}<br>
+					<br>
+			@Override<br>
+			protected double getInitialSD(GeneType type) {<br>
+				switch(type) {<br>
+				case SIZE1:<br>
+					return .1;<br>
+					<br>
+				case SIZE2:<br>
+					return .1;<br>
+					<br>
+				case SPEED1:<br>
+					return .1;<br>
+					<br>
+				case SPEED2:<br>
+					return .1;<br>
+					<br>
+				case MARKINGS1:<br>
+					return .1;<br>
+					<br>
+				case MARKINGS2:<br>
+					return .1;<br>
+					<br>
+				case FERTILITY:<br>
+					return .1;<br>
+					<br>
+				default:<br>
+					throw new RuntimeException("Never reach here");<br>
+					<br>
+				}<br>
+			}<br>
+		<br>
 		}
+
 	</div>
 
 	<script>
@@ -541,6 +606,15 @@
 				case 'mate-block':
 					mateBlockCode(id);
 					break;
+			}
+		}
+
+		function compile(){
+			var sandbox = $("#sandbox");
+			var blockArray = sandbox.children();
+			for(var i = 2; i < blockArray.length; i++){
+				alert("#a" + blockArray[i].id);
+				$("#a" + blockArray[i].id).click();
 			}
 		}
 
