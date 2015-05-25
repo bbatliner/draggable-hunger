@@ -40,9 +40,12 @@ $('#templates').load('templates.html', function() {
 	blocks.append(closestAnimalBlockTemplate({id: "block8",}));
 
 	blocks.append(geneSliderTemplate({name: 'Speed'}));
-	$('#gene-Speed .gene-slider').slider({
-		change: function(event, ui) {
-	      $('#gene-Speed .ui-slider-handle').text(ui.value / 100);
-	    }
+	$.each($('#gene-Speed .gene-slider'), function(index, elem) {
+		$(elem).slider({
+			change: function(event, ui) {
+				// Display value on slider handle
+		    	$('.ui-slider-handle', this).text(ui.value / 100);
+		    }
+		});
 	});
 });
