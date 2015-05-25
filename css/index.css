@@ -17,7 +17,7 @@ height: 80vh;
 	margin: 0;
 	padding: 2vw;
 	position: absolute;
-	background: url('gray_sand.png');
+	background: url('images/gray_sand.png');
 	overflow-y: scroll;
 }
 
@@ -83,7 +83,7 @@ button-draggable{
 	min-height: 20px;
 	padding-right: 20px;
 	margin: 10px 0 0 0px;
-	background: url('gray_sand.png');
+	background: url('images/gray_sand.png');
 	font-size: 10px;
 	line-height: 20px;
 	/*text-align: center;*/
@@ -95,7 +95,7 @@ button-draggable{
 	font-size: 12px;
 	line-height: 20px;
 	border: none;
-	background: url('gray_sand.png');
+	background: url('images/gray_sand.png');
 	padding: 2px;
 	outline: none;
 }
@@ -118,7 +118,7 @@ button-draggable{
 	font-size: 12px;
 	line-height: 20px;
 	border: none;
-	background: url('gray_sand.png');
+	background: url('images/gray_sand.png');
 	padding: 2px;
 	outline: none;
 }

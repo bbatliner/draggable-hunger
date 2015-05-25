@@ -25,6 +25,7 @@ $('#templates').load('templates.html', function() {
 	var herbivoreEatBlockTemplate = Handlebars.compile($("#herbivore-eat-block-template").html());
 	var carnivoreEatBlockTemplate = Handlebars.compile($("#carnivore-eat-block-template").html());
 	var closestAnimalBlockTemplate = Handlebars.compile($("#closest-animal-block-template").html());
+	var geneSliderTemplate = Handlebars.compile($("#gene-slider-template").html());
 
 	// Create elements from templates
 	var blocks = $('#blocks');
@@ -37,4 +38,7 @@ $('#templates').load('templates.html', function() {
 	blocks.append(herbivoreEatBlockTemplate({id: "block6",}));
 	blocks.append(carnivoreEatBlockTemplate({id: "block7",}));
 	blocks.append(closestAnimalBlockTemplate({id: "block8",}));
+
+	blocks.append(geneSliderTemplate({name: 'speed'}));
+	$('#slider-speed').slider();
 });
