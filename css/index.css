@@ -161,6 +161,7 @@ button-draggable{
 .gene {
 	font-family: "Consolas";
 	color: white;
+	padding: 5px;
 }
 
 .gene .gene-slider {

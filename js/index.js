@@ -40,9 +40,11 @@ $('#templates').load('templates.html', function() {
 	blocks.append(closestAnimalBlockTemplate({id: "block8",}));
 
 	blocks.append(geneSliderTemplate({name: 'Speed'}));
-	$.each($('#gene-Speed .gene-slider'), function(index, elem) {
+	blocks.append(geneSliderTemplate({name: 'Size'}));
+	// Setup sliders
+	$.each($('.gene-slider'), function(index, elem) {
 		$(elem).slider({
-			change: function(event, ui) {
+			slide: function(event, ui) {
 				// Display value on slider handle
 		    	$('.ui-slider-handle', this).text(ui.value / 100);
 		    }
