@@ -35,7 +35,10 @@ function drag(ev) {
 function drop(ev) {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
-    ev.target.appendChild(document.getElementById(data));
+    // Only move if the element is not being dropped on itself
+    if (ev.target !== document.getElementById(data) && !$.contains(document.getElementById(data), ev.target)) {
+    	ev.target.appendChild(document.getElementById(data));
+    }    
 }
 
 var output = document.getElementById('customCode');
