@@ -1,0 +1,34 @@
+<!-- ko foreach: { data: blocks, as: 'block' } -->
+	<div data-bind="attr: { id: block.cssId, class: block.cssClass}">
+		<div data-bind="attr: { class: block.type() + '-block' }">
+			<div><strong data-bind="text: block.name"></strong></div>
+				<!-- ko foreach: { data: block.constraints, as: 'constraint' } -->
+					<!-- ko component: { name: constraint.description() + "-constraint", params: constraint } --><!-- /ko -->
+				<!-- /ko -->
+				<!-- ko foreach: { data: block.members, as: 'member' } -->
+					<div><span data-bind="if: name(), text: name() + \' \'"></span></div><div data-bind="attr: { id: block.cssId() + '-insert-' + $index, class: 'insert-block'"></div>
+				<!-- /ko -->
+				this.components.forEach(function(component, index) {
+					html += '<div>' + component + ':</div><div id="' + cssId + '-insert-' + index + '" class="insert-block"></div>';
+				});
+		</div>
+	</div>
+<!-- /ko -->
+
+
+<div data-bind="foreach: blocks">
+	<p data-bind="text: $data"></p>
+</div>
+
+<!-- ko component: { name: "dropdown" + "-constraint", params: { name: "hello", values: ["Up", "Down"], cssId: "id1", cssClass: "selector", value: mySelected } } -->
+<!-- /ko -->
+
+<!-- <dropdown-constraint params='name: "hello", values: ["Up", "Down"], cssId: "id1", cssClass: "selector", value: mySelected'></dropdown-constraint> -->
+
+<p data-bind="text: mySelected"></p>
+
+<!-- ko if: name() -->
+	<span data-bind="text: name() + \': \'"></span>
+<!-- /ko -->
+
+<input data-bind="attr: { id: cssId, class: cssClass, type: \'number\', min: min, max: max, value: value }, value: value"></input>
