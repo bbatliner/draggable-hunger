@@ -2,32 +2,45 @@
 <html>
 	<head>
 		<link rel="stylesheet" type="text/css" href="render.css" />
+		<script src="jquery-1.11.3.min.js"></script>
+		<script src="jquery-ui.min.js"></script>
 		<script src="knockout-3.3.0.js"></script>
+		<script src="knockout-sortable.min.js"></script>
 	</head>
 
 	<body>
 
-		<div id="blockstore" class="UIsection" ondragover="allowDrop(event)" ondrop="dropOnBlockstore(event)">
-			<!-- ko foreach: { data: blocks, as: 'block' } -->
-				<div data-bind="attr: { id: block.cssId, class: block.cssClass}" draggable="true" ondragstart="drag(event)">
-					<div data-bind="attr: { class: block.type() + '-block' }">
-						<div><strong data-bind="text: block.name"></strong></div>
-							<!-- ko foreach: { data: block.constraints, as: 'constraint' } -->
-								<!-- ko component: { name: constraint.description() + "-constraint", params: constraint } --><!-- /ko -->
-								<br>
-							<!-- /ko -->
-							<!-- ko foreach: { data: block.members, as: 'member' } -->
-								<div><!-- ko if: member.name() --><span data-bind="text: member.name() + ': '"></span><!-- /ko --></div>
-								<div data-bind="attr: { id: block.cssId() + '-insert-' + $index(), class: 'insert-block' }"></div>
-							<!-- /ko -->
-					</div>
+		<span id="blockstore" class="UIsection" data-bind="sortable: { data: blockstore, as: 'block' }">	
+			<div data-bind="attr: { id: block.cssId, class: block.cssClass}">
+				<div data-bind="attr: { class: block.type() + '-block' }">
+					<div><strong data-bind="text: block.name"></strong></div>
+						<!-- ko foreach: { data: block.constraints, as: 'constraint' } -->
+							<!-- ko component: { name: constraint.description() + "-constraint", params: constraint } --><!-- /ko -->
+							<br>
+						<!-- /ko -->
+						<!-- ko foreach: { data: block.members, as: 'member' } -->
+							<div><!-- ko if: member.name() --><span data-bind="text: member.name() + ': '"></span><!-- /ko --></div>
+							<div data-bind="attr: { id: block.cssId() + '-insert-' + $index(), class: 'insert-block' }"></div>
+						<!-- /ko -->
 				</div>
-			<!-- /ko -->
-		</div>
+			</div>
+		</span>
 
-		<div id="workspace" class="UIsection" ondragover="allowDrop(event)" ondrop="drop(event)">
-
-		</div>
+		<span id="workspace" class="UIsection" data-bind="sortable: { data: workspace, as: 'block' }">
+			<div data-bind="attr: { id: block.cssId, class: block.cssClass}">
+				<div data-bind="attr: { class: block.type() + '-block' }">
+					<div><strong data-bind="text: block.name"></strong></div>
+						<!-- ko foreach: { data: block.constraints, as: 'constraint' } -->
+							<!-- ko component: { name: constraint.description() + "-constraint", params: constraint } --><!-- /ko -->
+							<br>
+						<!-- /ko -->
+						<!-- ko foreach: { data: block.members, as: 'member' } -->
+							<div><!-- ko if: member.name() --><span data-bind="text: member.name() + ': '"></span><!-- /ko --></div>
+							<div data-bind="attr: { id: block.cssId() + '-insert-' + $index(), class: 'insert-block' }"></div>
+						<!-- /ko -->
+				</div>
+			</div>
+		</span>
 
 		<script src="render.js"></script>
 	</body>

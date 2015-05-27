@@ -1,40 +1,40 @@
 'use strict';
 
-function nextId(base) {
-	var id = 0;
-	do {
-		var node = document.getElementById(base + id++);
-	} while (node);
-	return base + (id - 1);
-}
+// function nextId(base) {
+// 	var id = 0;
+// 	do {
+// 		var node = document.getElementById(base + id++);
+// 	} while (node);
+// 	return base + (id - 1);
+// }
 
-var nextBlockId = function() {
-	return nextId('block');
-};
+// var nextBlockId = function() {
+// 	return nextId('block');
+// };
 
-// Drag and drop
-function allowDrop(event) {
-	event.preventDefault();
-}
+// // Drag and drop
+// function allowDrop(event) {
+// 	event.preventDefault();
+// }
 
-function drag(event) {
-	event.dataTransfer.setData('text', event.target.id);
-}
+// function drag(event) {
+// 	event.dataTransfer.setData('text', event.target.id);
+// }
 
-function dropOnBlockstore(event) {
-	event.preventDefault();
-}
+// function dropOnBlockstore(event) {
+// 	event.preventDefault();
+// }
 
-function drop(event) {
-	event.preventDefault();
-	var data = event.dataTransfer.getData('text');
-	var element = document.getElementById(data);
-	element.setAttribute('id', nextBlockId());
-	// Only move if the element is not being dropped on itself (or its children)
-    if (event.target !== element && !element.contains(event.target)) {
-    	event.target.appendChild(element);
-    }
-}
+// function drop(event) {
+// 	event.preventDefault();
+// 	var data = event.dataTransfer.getData('text');
+// 	var element = document.getElementById(data);
+// 	element.setAttribute('id', nextBlockId());
+// 	// Only move if the element is not being dropped on itself (or its children)
+//     if (event.target !== element && !element.contains(event.target)) {
+//     	event.target.appendChild(element);
+//     }
+// }
 
 // ELEMENT SUPERCLASS
 var Element = function(name, cssId, cssClass) {
@@ -90,20 +90,20 @@ var Block = function(type, description, constraints, members, cssId, cssClass) {
 Block.prototype = Object.create(Element.prototype);
 Block.prototype.constructor = Element;
 
-Block.prototype.toCode = function() {
-	switch(this.type) {
-		case BlockType.MOVE:
-			if (this.components.length === 0) {
-				var direction = document.getElementById(this.constraints[0].cssId).value.toUpperCase();
-				return 'return new Move(Direction.' + direction + ');';
-			}
-			else {
-				return 'uhhh idk';
-			}
-		case BlockType.CELL:
-			return '';
-	}
-};
+// Block.prototype.toCode = function() {
+// 	switch(this.type) {
+// 		case BlockType.MOVE:
+// 			if (this.components.length === 0) {
+// 				var direction = document.getElementById(this.constraints[0].cssId).value.toUpperCase();
+// 				return 'return new Move(Direction.' + direction + ');';
+// 			}
+// 			else {
+// 				return 'uhhh idk';
+// 			}
+// 		case BlockType.CELL:
+// 			return '';
+// 	}
+// };
 
 
 // BLOCK MEMBER CONTAINER CLASS
@@ -136,14 +136,7 @@ ko.components.register('number-constraint', {
 	template: '<!-- ko if: name() --><span data-bind="text: name() + \': \'"></span><!-- /ko --><input data-bind="attr: { id: cssId, class: cssClass, type: \'number\', min: min, max: max, value: value }, value: value"></input>'
 });
 
-
 // ACTUAL CODE
-// var myDropDownConstraint = new DropDownConstraint('', ['towards', 'away from'], 'block1-boolean');
-// var myBlock = new Block(BlockType.MOVE, 'Move', [myDropDownConstraint], ['this cell'], 'block1', 'drag-block');
-
-// var myBlock = new Block(BlockType.CELL, '', [], ['Get Cell of Animal'], 'block1', 'drag-block');
-
-// var myNumberConstraint = new NumberConstraint('X', 0, 64, 32);
 
 var dropDownConstraint1 = new DropDownConstraint('Direction', ['Up', 'Down', 'Left', 'Right', 'Randomly']);
 var block1 = new Block(BlockType.MOVE, 'Move', [dropDownConstraint1], [], 'block1', 'drag-block');
@@ -171,5 +164,10 @@ var member7_2 = new Member('Then', '');
 var member7_3 = new Member('Else', '');
 var block7 = new Block('if-else', '', [], [member7, member7_2, member7_3], 'block7', 'drag-block');
 
-var blocks = ko.observableArray([block1, block2, block3, block4, block5, block6, block7]);
-ko.applyBindings(blocks);
+var ViewModel = function() {
+	this.blockstore = ko.observableArray([block1, block2, block3, block4, block5, block6, block7]);
+	this.workspace = ko.observableArray([]);
+};
+
+var myViewModel = new ViewModel();
+ko.applyBindings(myViewModel);

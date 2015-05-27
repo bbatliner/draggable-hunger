@@ -11,16 +11,12 @@ body{
 	margin: 5vh 5vw;
 }
 
-#workspace{
-	margin-left: 30vw;
-}
-
 .UIsection{
+	display: inline-block;
 	height: 65vh;
 	width: 26vw;
 	margin: 0;
 	padding: 2vw;
-	position: absolute;
 	background: url('images/gray_sand.png');
 	overflow-y: scroll;
 	overflow-x: hidden;
