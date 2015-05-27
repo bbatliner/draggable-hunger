@@ -110,6 +110,8 @@ Block.prototype.constructor = Element;
 var Member = function(name, type) {
 	this.name = ko.observable(name);
 	this.type = ko.observable(type);
+
+	this.block = ko.observable();
 };
 
 // KNOCKOUT COMPONENTS
@@ -164,9 +166,17 @@ var member7_2 = new Member('Then', '');
 var member7_3 = new Member('Else', '');
 var block7 = new Block('if-else', '', [], [member7, member7_2, member7_3], 'block7', 'drag-block');
 
+member7.block = block6;
+
 var ViewModel = function() {
 	this.blockstore = ko.observableArray([block1, block2, block3, block4, block5, block6, block7]);
 	this.workspace = ko.observableArray([]);
+
+	this.cancelDrag = function(arg) {
+		console.log('woah');
+		arg.cancelDrop = true;
+		return arg;
+	};
 };
 
 var myViewModel = new ViewModel();

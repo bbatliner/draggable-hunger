@@ -10,37 +10,27 @@
 
 	<body>
 
-		<span id="blockstore" class="UIsection" data-bind="sortable: { data: blockstore, as: 'block' }">	
-			<div data-bind="attr: { id: block.cssId, class: block.cssClass}">
-				<div data-bind="attr: { class: block.type() + '-block' }">
-					<div><strong data-bind="text: block.name"></strong></div>
-						<!-- ko foreach: { data: block.constraints, as: 'constraint' } -->
-							<!-- ko component: { name: constraint.description() + "-constraint", params: constraint } --><!-- /ko -->
-							<br>
-						<!-- /ko -->
-						<!-- ko foreach: { data: block.members, as: 'member' } -->
-							<div><!-- ko if: member.name() --><span data-bind="text: member.name() + ': '"></span><!-- /ko --></div>
-							<div data-bind="attr: { id: block.cssId() + '-insert-' + $index(), class: 'insert-block' }"></div>
-						<!-- /ko -->
-				</div>
-			</div>
+		<span id="blockstore" class="UIsection" data-bind="sortable: { data: blockstore, as: 'block', template: 'blockTemplate' }">	
 		</span>
 
-		<span id="workspace" class="UIsection" data-bind="sortable: { data: workspace, as: 'block' }">
+		<span id="workspace" class="UIsection" data-bind="sortable: { data: workspace, as: 'block', template: 'blockTemplate' }">
+		</span>
+
+		<script id="blockTemplate" type="text/html">
 			<div data-bind="attr: { id: block.cssId, class: block.cssClass}">
 				<div data-bind="attr: { class: block.type() + '-block' }">
 					<div><strong data-bind="text: block.name"></strong></div>
-						<!-- ko foreach: { data: block.constraints, as: 'constraint' } -->
-							<!-- ko component: { name: constraint.description() + "-constraint", params: constraint } --><!-- /ko -->
-							<br>
-						<!-- /ko -->
-						<!-- ko foreach: { data: block.members, as: 'member' } -->
-							<div><!-- ko if: member.name() --><span data-bind="text: member.name() + ': '"></span><!-- /ko --></div>
-							<div data-bind="attr: { id: block.cssId() + '-insert-' + $index(), class: 'insert-block' }"></div>
-						<!-- /ko -->
+					<!-- ko foreach: { data: block.constraints, as: 'constraint' } -->
+						<!-- ko component: { name: constraint.description() + "-constraint", params: constraint } --><!-- /ko -->
+						<br>
+					<!-- /ko -->
+					<!-- ko foreach: { data: block.members, as: 'member' } -->
+						<div><!-- ko if: member.name() --><span data-bind="text: member.name() + ': '"></span><!-- /ko --></div>
+						<div data-bind="attr: { id: $parent.cssId() + '-insert-' + $index(), class: 'insert-block' }"></div>
+					<!-- /ko -->
 				</div>
 			</div>
-		</span>
+		</script>
 
 		<script src="render.js"></script>
 	</body>
