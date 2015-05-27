@@ -76,6 +76,7 @@ BlockType.CELL = 'cell';
 BlockType.EAT  = 'eat';
 BlockType.MATE = 'mate';
 BlockType.ANIMAL = 'animal';
+BlockType.DUMMY = 'dummy';
 
 
 // BLOCK CLASS
@@ -111,7 +112,7 @@ var Member = function(name, type) {
 	this.name = ko.observable(name);
 	this.type = ko.observable(type);
 
-	this.block = ko.observable();
+	this.blocks = ko.observableArray([]);
 };
 
 // KNOCKOUT COMPONENTS
@@ -166,16 +167,18 @@ var member7_2 = new Member('Then', '');
 var member7_3 = new Member('Else', '');
 var block7 = new Block('if-else', '', [], [member7, member7_2, member7_3], 'block7', 'drag-block');
 
-member7.block = block6;
+member2.blocks()[member2.blocks().length] = block3;
+member2.blocks()[member2.blocks().length] = block4;
 
 var ViewModel = function() {
-	this.blockstore = ko.observableArray([block1, block2, block3, block4, block5, block6, block7]);
+	this.blockstore = ko.observableArray([block1, block2, block5, block6, block7]);
 	this.workspace = ko.observableArray([]);
 
-	this.cancelDrag = function(arg) {
-		console.log('woah');
-		arg.cancelDrop = true;
-		return arg;
+	this.fillDummyBlock = function(arg) {
+		console.log(arg.targetParent());
+		// if (arg.sourceParent().length === 0) {
+		// 	arg.sourceParent()[0] = new Block(BlockType.DUMMY, '', [], [], '', 'drag-block');
+		// }
 	};
 };
 

@@ -26,7 +26,7 @@
 					<!-- /ko -->
 					<!-- ko foreach: { data: block.members, as: 'member' } -->
 						<div><!-- ko if: member.name() --><span data-bind="text: member.name() + ': '"></span><!-- /ko --></div>
-						<div data-bind="attr: { id: $parent.cssId() + '-insert-' + $index(), class: 'insert-block' }"></div>
+						<div data-bind="sortable: { data: member.blocks, as: 'block', template: 'blockTemplate' }, attr: { id: $parent.cssId() + '-insert-' + $index(), class: 'insert-block' }"></div>
 					<!-- /ko -->
 				</div>
 			</div>
