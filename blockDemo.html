@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<style>
+
+		div.UIsection{
+			background: transparent;
+			height: 100%;
+			overflow: hidden;
+			border: none;
+		}
+
+		.insert-block{
+			background: white;
+		}
+
+	</style>
+	<link rel="stylesheet" type="text/css" href="css/index.css" />
+	<script src="js/jquery-1.11.3.min.js"></script>
+	<script src="js/handlebars-v3.0.3.js"></script>
+	<script src="js/index.js"></script>
+	<script>
+
+
+
+	</script>
+</head>
+<body>
+
+
+
+	<div class="UIsection" id="blocks" ondrop="drop(event)" ondragover="allowDrop(event)">
+	
+	</div>
+
+	<script>
+
+		// Templating
+		$('<div id="templates"></div>').appendTo('body').load('templates.html', function() {
+			var moveBlockTemplate = Handlebars.compile($("#move-block-template").html());
+			var moveTowardBlockTemplate = Handlebars.compile($("#move-toward-block-template").html());
+			var cellCoordinatesBlockTemplate = Handlebars.compile($("#cell-coordinates-block-template").html());
+			var cellAnimalBlockTemplate = Handlebars.compile($("#cell-animal-block-template").html());
+			var mateBlockTemplate = Handlebars.compile($("#mate-block-template").html());
+			var herbivoreEatBlockTemplate = Handlebars.compile($("#herbivore-eat-block-template").html());
+			var carnivoreEatBlockTemplate = Handlebars.compile($("#carnivore-eat-block-template").html());
+			var closestAnimalBlockTemplate = Handlebars.compile($("#closest-animal-block-template").html());
+			var ifElseBlockTemplate = Handlebars.compile($("#if-else-block-template").html());
+
+			var blocks = document.getElementById('blocks');
+
+			blocks.innerHTML += moveBlockTemplate({id: "block1",});
+			blocks.innerHTML += moveTowardBlockTemplate({id: "block2",});
+			blocks.innerHTML += cellCoordinatesBlockTemplate({id: "block3",});
+			blocks.innerHTML += cellAnimalBlockTemplate({id: "block4",});
+			blocks.innerHTML += mateBlockTemplate({id: "block5",});
+			blocks.innerHTML += herbivoreEatBlockTemplate({id: "block6",});
+			blocks.innerHTML += carnivoreEatBlockTemplate({id: "block7",});
+			blocks.innerHTML += closestAnimalBlockTemplate({id: "block8",});
+			blocks.innerHTML += ifElseBlockTemplate({id: "block9",});
+		});
+
+	</script>
+
+
+
+</body>
+</html>
