@@ -43,6 +43,11 @@ body{
 	margin: 10px 0;
 }
 
+.UIsection div.dummy-block {
+	visibility: hidden;
+	min-height: 180px;
+}
+
 .UIsection div.if-else-block{
 	width: 100%;
 	min-height: 50px;

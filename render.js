@@ -1,16 +1,16 @@
 'use strict';
 
-// function nextId(base) {
-// 	var id = 0;
-// 	do {
-// 		var node = document.getElementById(base + id++);
-// 	} while (node);
-// 	return base + (id - 1);
-// }
+function nextId(base) {
+	var id = 0;
+	do {
+		var node = document.getElementById(base + id++);
+	} while (node);
+	return base + (id - 1);
+}
 
-// var nextBlockId = function() {
-// 	return nextId('block');
-// };
+var nextBlockId = function() {
+	return nextId('block');
+};
 
 // // Drag and drop
 // function allowDrop(event) {
@@ -174,13 +174,35 @@ var ViewModel = function() {
 	this.blockstore = ko.observableArray([block1, block2, block5, block6, block7]);
 	this.workspace = ko.observableArray([]);
 
+	// TODO: Figure out why 2nd tier nested blocks can't move in or out of the nests.
+
+	this.makeDroppable = function() {
+		ko.bindingHandlers.sortable.connectClass = 'insert-block';
+		console.log(ko.bindingHandlers.sortable.connectClass);
+	};
+
+	this.makeUndroppable = function() {
+		ko.bindingHandlers.sortable.connectClass = 'ko_container';
+		console.log(ko.bindingHandlers.sortable.connectClass);
+	};
+
 	this.fillDummyBlock = function(arg) {
-		console.log(arg.targetParent());
+		// console.log(arg.sourceParent());
 		// if (arg.sourceParent().length === 0) {
-		// 	arg.sourceParent()[0] = new Block(BlockType.DUMMY, '', [], [], '', 'drag-block');
+		// 	var block1 = new Block(BlockType.DUMMY, '', [], [], nextBlockId(), 'dummy-block');
+		// 	arg.sourceParent()[0] = block1;
+		// 	arg.sourceParent.valueHasMutated();
+		// 	console.log(arg.sourceParent());
 		// }
 	};
 };
+
+// For some odd reason, I need to "jumpstart" the changing connectClass 
+// (in makeDroppable and makeUndroppable above) by initially setting the value
+// to 'insert-block'. This allows blocks to be dropped onto insert-blocks (members)
+// so that nested blocks can be created. If I don't include this line, the functionality
+// I've written above does not work. The many wonders of Knockout.
+ko.bindingHandlers.sortable.connectClass = 'insert-block';
 
 var myViewModel = new ViewModel();
 ko.applyBindings(myViewModel);
