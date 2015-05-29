@@ -12,30 +12,6 @@ var nextBlockId = function() {
 	return nextId('block');
 };
 
-// // Drag and drop
-// function allowDrop(event) {
-// 	event.preventDefault();
-// }
-
-// function drag(event) {
-// 	event.dataTransfer.setData('text', event.target.id);
-// }
-
-// function dropOnBlockstore(event) {
-// 	event.preventDefault();
-// }
-
-// function drop(event) {
-// 	event.preventDefault();
-// 	var data = event.dataTransfer.getData('text');
-// 	var element = document.getElementById(data);
-// 	element.setAttribute('id', nextBlockId());
-// 	// Only move if the element is not being dropped on itself (or its children)
-//     if (event.target !== element && !element.contains(event.target)) {
-//     	event.target.appendChild(element);
-//     }
-// }
-
 // ELEMENT SUPERCLASS
 var Element = function(name, cssId, cssClass) {
 	this.name = ko.observable(name);
@@ -165,7 +141,7 @@ var block6 = new Block(BlockType.ANIMAL, 'Closest Animal', [dropDownConstraint6,
 var member7 = new Member('If this Cell contains', '');
 var member7_2 = new Member('Then', '');
 var member7_3 = new Member('Else', '');
-var block7 = new Block('if-else', '', [], [member7, member7_2, member7_3], 'block7', 'drag-block');
+var block7 = new Block('if-else', 'Conditional', [], [member7, member7_2, member7_3], 'block7', 'drag-block');
 
 member2.blocks()[member2.blocks().length] = block3;
 member2.blocks()[member2.blocks().length] = block4;
@@ -174,17 +150,18 @@ var ViewModel = function() {
 	this.blockstore = ko.observableArray([block1, block2, block5, block6, block7]);
 	this.workspace = ko.observableArray([]);
 
-	// TODO: Figure out why 2nd tier nested blocks can't move in or out of the nests.
+	// TODO: Find out why the "event" binding prevents the default handling of the event
+	// TODO: Find a way to adjust the minimum drop height thingy so that small blocks can be dropped into small spaces.
 
-	this.makeDroppable = function() {
-		ko.bindingHandlers.sortable.connectClass = 'insert-block';
-		console.log(ko.bindingHandlers.sortable.connectClass);
-	};
+	// this.makeDroppable = function(elem, event) {
+	// 	// ko.bindingHandlers.sortable.connectClass = 'insert-block';
+	// 	console.log(ko.bindingHandlers.sortable.connectClass);
+	// };
 
-	this.makeUndroppable = function() {
-		ko.bindingHandlers.sortable.connectClass = 'ko_container';
-		console.log(ko.bindingHandlers.sortable.connectClass);
-	};
+	// this.makeUndroppable = function() {
+	// 	// ko.bindingHandlers.sortable.connectClass = 'ko_container';
+	// 	console.log(ko.bindingHandlers.sortable.connectClass);
+	// };
 
 	this.fillDummyBlock = function(arg) {
 		// console.log(arg.sourceParent());

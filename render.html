@@ -17,7 +17,7 @@
 		</span>
 
 		<script id="blockTemplate" type="text/html">
-			<div data-bind="attr: { id: block.cssId, class: block.cssClass}, event: { mousedown: $root.makeDroppable, mouseup: $root.makeUndroppable }">
+			<div data-bind="attr: { id: block.cssId, class: block.cssClass}, event: {  }">
 				<div data-bind="attr: { class: block.type() + '-block' }">
 					<div><strong data-bind="text: block.name"></strong></div>
 					<!-- ko foreach: { data: block.constraints, as: 'constraint' } -->
