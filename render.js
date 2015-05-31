@@ -151,7 +151,10 @@ var ViewModel = function() {
 	this.workspace = ko.observableArray([]);
 
 	// TODO: Find out why the "event" binding prevents the default handling of the event
+	// SOLUTION: Have your event handler return true;
 	// TODO: Find a way to adjust the minimum drop height thingy so that small blocks can be dropped into small spaces.
+	// SOLUTION: You can't :/ You have to work around the "intersect" tolerance of jQuery UI's sortable - when the draggable element
+	// covers more than 50% of the object, it will hover a "drop" state.
 
 	// this.makeDroppable = function(elem, event) {
 	// 	// ko.bindingHandlers.sortable.connectClass = 'insert-block';
@@ -180,6 +183,8 @@ var ViewModel = function() {
 // so that nested blocks can be created. If I don't include this line, the functionality
 // I've written above does not work. The many wonders of Knockout.
 ko.bindingHandlers.sortable.connectClass = 'insert-block';
+
+ko.bindingHandlers.sortable.options = { tolerance: "intersect" };
 
 var myViewModel = new ViewModel();
 ko.applyBindings(myViewModel);
